@@ -149,3 +149,14 @@ button:hover {
 .leg-s {
   color: #c0c0c0;
 }
+
+#review-btn {
+  margin-top: 15px; /* Spacing between Start and Review */
+  background-color: #4caf50; /* Green to differentiate */
+  color: white;
+  font-size: 16px; /* Slightly smaller than Start */
+  padding: 12px 25px;
+}
+#review-btn:hover {
+  background-color: #45a049;
+}
