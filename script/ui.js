@@ -94,13 +94,15 @@ function draw(
       } else if (cell === 2) {
         // Dot
         ctx.fillStyle = "#ffb8ae";
+        // Adjusted for larger TILE size
         ctx.fillRect(x + TILE / 2 - 2, y + TILE / 2 - 2, 4, 4);
       } else if (cell === 3) {
         // Power Pellet
         ctx.fillStyle =
           Math.floor(Date.now() / 200) % 2 === 0 ? "#ffb8ae" : "#ff0000";
         ctx.beginPath();
-        ctx.arc(x + TILE / 2, y + TILE / 2, 6, 0, Math.PI * 2);
+        // Slightly larger pellet for TILE 30
+        ctx.arc(x + TILE / 2, y + TILE / 2, 7, 0, Math.PI * 2);
         ctx.fill();
       }
     }
@@ -111,8 +113,10 @@ function draw(
     const px = powerupOnMap.x * TILE;
     const py = powerupOnMap.y * TILE;
     ctx.fillStyle = POWERUP_COLORS[powerupOnMap.type];
-    ctx.font = "bold 16px Arial";
-    ctx.fillText(POWERUP_ICONS[powerupOnMap.type], px + 4, py + 16);
+    // Larger Font
+    ctx.font = "bold 24px Arial";
+    // Centered Text: 6px offset left, 24px offset down (approx for 24px font)
+    ctx.fillText(POWERUP_ICONS[powerupOnMap.type], px + 6, py + 24);
   }
 
   // Draw Fire Trails
@@ -195,15 +199,15 @@ function draw(
     // Eyes
     ctx.fillStyle = "white";
     ctx.beginPath();
-    ctx.arc(gx - 3, gy - 4, 3, 0, Math.PI * 2);
-    ctx.arc(gx + 3, gy - 4, 3, 0, Math.PI * 2);
+    ctx.arc(gx - 4, gy - 5, 4, 0, Math.PI * 2); // Larger Eyes
+    ctx.arc(gx + 4, gy - 5, 4, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = "blue";
     ctx.beginPath();
     const lookX = g.dx * 2;
     const lookY = g.dy * 2;
-    ctx.arc(gx - 3 + lookX, gy - 4 + lookY, 1.5, 0, Math.PI * 2);
-    ctx.arc(gx + 3 + lookX, gy - 4 + lookY, 1.5, 0, Math.PI * 2);
+    ctx.arc(gx - 4 + lookX, gy - 5 + lookY, 2, 0, Math.PI * 2);
+    ctx.arc(gx + 4 + lookX, gy - 5 + lookY, 2, 0, Math.PI * 2);
     ctx.fill();
   });
 }

@@ -22,8 +22,9 @@ function startGame() {
 }
 
 function resetLevel() {
-  // Deep copy map from constants.js
-  board = JSON.parse(JSON.stringify(MAP_TEMPLATE));
+  // --- UPDATED: Generate Random Map ---
+  // Instead of copying a fixed template, we generate a new one.
+  board = generateRandomMap();
 
   // Count dots
   totalDots = 0;

@@ -4,32 +4,35 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  justify-content: flex-start; /* Aligns to top so scrolling works */
+  min-height: 100vh;
   margin: 0;
   font-family: "Courier New", Courier, monospace;
-  overflow: hidden;
-  touch-action: none;
+  overflow-y: auto; /* Enables vertical scrolling if needed */
+  padding: 20px 0; /* Adds safe space at top and bottom */
+  touch-action: pan-y; /* Allows vertical scrolling but prevents other gestures */
 }
 
 #game-ui {
   width: 100%;
-  max-width: 580px;
+  max-width: 95vw; /* Responsive: 95% of screen width */
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
-  font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
   padding: 0 10px;
   box-sizing: border-box;
+  font-size: 24px;
 }
 
 .stat-box {
   background: #222;
-  padding: 5px 10px;
+  padding: 8px 12px;
   border-radius: 4px;
   border: 1px solid #444;
+  white-space: nowrap; /* Prevents text from breaking */
+  font-size: clamp(14px, 4vw, 24px); /* Scales text automatically */
 }
 
 #powerup-status {
@@ -39,8 +42,8 @@ body {
 
 #progress-container {
   width: 100%;
-  max-width: 580px;
-  height: 10px;
+  max-width: 95vw; /* Responsive */
+  height: 15px;
   background: #333;
   margin-bottom: 10px;
   border-radius: 5px;
@@ -60,7 +63,7 @@ body {
   top: 0;
   left: 80%;
   height: 100%;
-  width: 2px;
+  width: 4px;
   background: red;
   z-index: 2;
 }
@@ -68,7 +71,9 @@ body {
 #game-container {
   position: relative;
   box-shadow: 0 0 30px rgba(25, 25, 166, 0.4);
-  max-width: 100%;
+  max-width: 95vw; /* Responsive container */
+  display: flex;
+  justify-content: center;
 }
 
 canvas {
@@ -76,8 +81,14 @@ canvas {
   border: 4px solid #1919a6;
   display: block;
   border-radius: 4px;
-  max-width: 100%;
+
+  /* RESPONSIVE CANVAS SCALING */
+  width: 100%;
   height: auto;
+  max-width: 95vw; /* Never wider than screen */
+  max-height: 70vh; /* Never taller than 70% of screen height */
+  object-fit: contain;
+  touch-action: none; /* Prevents dragging the whole page while playing */
 }
 
 #overlay {
@@ -92,11 +103,13 @@ canvas {
   align-items: center;
   justify-content: center;
   z-index: 10;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 h1 {
   margin: 0 0 20px 0;
-  font-size: 40px;
+  font-size: clamp(30px, 8vw, 50px); /* Responsive Font Size */
   text-shadow: 3px 3px #000;
   text-align: center;
 }
@@ -104,34 +117,51 @@ h1 {
 #win-reason {
   margin-bottom: 20px;
   color: #aaa;
+  text-align: center;
+  font-size: clamp(14px, 4vw, 18px);
 }
 
 button {
   background: #ffcc00;
   border: none;
   padding: 15px 30px;
-  font-size: 20px;
+  font-size: clamp(16px, 5vw, 24px); /* Responsive Text */
   font-weight: bold;
   cursor: pointer;
   font-family: inherit;
   border-radius: 5px;
+  width: 100%;
+  max-width: 300px; /* Limits button width on large screens */
 }
 button:hover {
   background: #ffe066;
 }
 
+/* Review Button Styling */
+#review-btn {
+  margin-top: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 15px 35px;
+}
+#review-btn:hover {
+  background-color: #45a049;
+}
+
 .controls {
-  margin-top: 10px;
+  margin-top: 15px;
   color: #888;
-  font-size: 12px;
+  font-size: 16px;
   text-align: center;
 }
+
 .powerup-legend {
-  font-size: 11px;
+  font-size: 12px;
   color: #aaa;
-  margin-top: 5px;
+  margin-top: 8px;
   text-align: center;
-  max-width: 580px;
+  max-width: 95vw;
+  line-height: 1.5; /* Better readability */
 }
 
 .leg-f {
@@ -148,15 +178,4 @@ button:hover {
 }
 .leg-s {
   color: #c0c0c0;
-}
-
-#review-btn {
-  margin-top: 15px; /* Spacing between Start and Review */
-  background-color: #4caf50; /* Green to differentiate */
-  color: white;
-  font-size: 16px; /* Slightly smaller than Start */
-  padding: 12px 25px;
-}
-#review-btn:hover {
-  background-color: #45a049;
 }
