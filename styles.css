@@ -1,0 +1,151 @@
+body {
+  background-color: #111;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: "Courier New", Courier, monospace;
+  overflow: hidden;
+  touch-action: none;
+}
+
+#game-ui {
+  width: 100%;
+  max-width: 580px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.stat-box {
+  background: #222;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #444;
+}
+
+#powerup-status {
+  color: #00ff00;
+  visibility: hidden;
+}
+
+#progress-container {
+  width: 100%;
+  max-width: 580px;
+  height: 10px;
+  background: #333;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+#progress-bar {
+  height: 100%;
+  background: #ffcc00;
+  width: 0%;
+  transition: width 0.2s;
+}
+
+#progress-marker {
+  position: absolute;
+  top: 0;
+  left: 80%;
+  height: 100%;
+  width: 2px;
+  background: red;
+  z-index: 2;
+}
+
+#game-container {
+  position: relative;
+  box-shadow: 0 0 30px rgba(25, 25, 166, 0.4);
+  max-width: 100%;
+}
+
+canvas {
+  background-color: black;
+  border: 4px solid #1919a6;
+  display: block;
+  border-radius: 4px;
+  max-width: 100%;
+  height: auto;
+}
+
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+h1 {
+  margin: 0 0 20px 0;
+  font-size: 40px;
+  text-shadow: 3px 3px #000;
+  text-align: center;
+}
+
+#win-reason {
+  margin-bottom: 20px;
+  color: #aaa;
+}
+
+button {
+  background: #ffcc00;
+  border: none;
+  padding: 15px 30px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 5px;
+}
+button:hover {
+  background: #ffe066;
+}
+
+.controls {
+  margin-top: 10px;
+  color: #888;
+  font-size: 12px;
+  text-align: center;
+}
+.powerup-legend {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 5px;
+  text-align: center;
+  max-width: 580px;
+}
+
+.leg-f {
+  color: #00ffff;
+}
+.leg-p {
+  color: #ff0000;
+}
+.leg-m {
+  color: #0000ff;
+}
+.leg-t {
+  color: #ffffff;
+}
+.leg-s {
+  color: #c0c0c0;
+}

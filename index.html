@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pac-Man: Fixed Physics</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="game-ui">
+      <div class="stat-box">Lvl: <span id="level">1</span></div>
+      <div class="stat-box">Score: <span id="score">0</span></div>
+      <div class="stat-box" id="powerup-status">ACTIVE</div>
+    </div>
+
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+      <div id="progress-marker" title="Win Threshold (80%)"></div>
+    </div>
+
+    <div id="game-container">
+      <canvas id="canvas"></canvas>
+      <div id="overlay">
+        <h1 id="status-msg">PAC-MAN</h1>
+        <p id="win-reason"></p>
+        <button onclick="startGame()">START GAME</button>
+      </div>
+    </div>
+
+    <div class="controls">SWIPE or WASD to Move</div>
+    <div class="powerup-legend">
+      <span class="leg-f">F:Freeze</span> | <span class="leg-p">P:Pyro</span> |
+      <span class="leg-m">M:Magnet</span> |
+      <span class="leg-t">T:Tornado</span> |
+      <span class="leg-s">S:Titanium</span>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
