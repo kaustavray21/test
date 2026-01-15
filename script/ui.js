@@ -87,21 +87,47 @@ function draw(
       const cell = board[r][c];
 
       if (cell === 1) {
-        // Wall
-        ctx.strokeStyle = "#1919A6";
+        // --- WALLS (3D ELEVATED LOOK) ---
+
+        // 1. Base Color
+        ctx.fillStyle = "#3bdbf7";
+        ctx.fillRect(x, y, TILE, TILE);
+
+        // 2. Bevel Highlight (Top/Left) - Light Source Top Left
+        ctx.fillStyle = "rgba(255, 255, 255, 0.5)"; // Bright Highlight
+        ctx.beginPath();
+        ctx.moveTo(x, y + TILE);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x + TILE, y);
+        ctx.lineTo(x + TILE - 4, y + 4);
+        ctx.lineTo(x + 4, y + 4);
+        ctx.lineTo(x + 4, y + TILE - 4);
+        ctx.fill();
+
+        // 3. Bevel Shadow (Bottom/Right) - Shadow Bottom Right
+        ctx.fillStyle = "rgba(0, 0, 0, 0.4)"; // Dark Shadow
+        ctx.beginPath();
+        ctx.moveTo(x, y + TILE);
+        ctx.lineTo(x + TILE, y + TILE);
+        ctx.lineTo(x + TILE, y);
+        ctx.lineTo(x + TILE - 4, y + 4);
+        ctx.lineTo(x + TILE - 4, y + TILE - 4);
+        ctx.lineTo(x + 4, y + TILE - 4);
+        ctx.fill();
+
+        // 4. Black Border (Separation)
+        ctx.strokeStyle = "black";
         ctx.lineWidth = 1;
-        ctx.strokeRect(x + 2, y + 2, TILE - 4, TILE - 4);
+        ctx.strokeRect(x, y, TILE, TILE);
       } else if (cell === 2) {
         // Dot
         ctx.fillStyle = "#ffb8ae";
-        // Adjusted for larger TILE size
         ctx.fillRect(x + TILE / 2 - 2, y + TILE / 2 - 2, 4, 4);
       } else if (cell === 3) {
         // Power Pellet
         ctx.fillStyle =
           Math.floor(Date.now() / 200) % 2 === 0 ? "#ffb8ae" : "#ff0000";
         ctx.beginPath();
-        // Slightly larger pellet for TILE 30
         ctx.arc(x + TILE / 2, y + TILE / 2, 7, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -113,9 +139,7 @@ function draw(
     const px = powerupOnMap.x * TILE;
     const py = powerupOnMap.y * TILE;
     ctx.fillStyle = POWERUP_COLORS[powerupOnMap.type];
-    // Larger Font
     ctx.font = "bold 24px Arial";
-    // Centered Text: 6px offset left, 24px offset down (approx for 24px font)
     ctx.fillText(POWERUP_ICONS[powerupOnMap.type], px + 6, py + 24);
   }
 
@@ -199,7 +223,7 @@ function draw(
     // Eyes
     ctx.fillStyle = "white";
     ctx.beginPath();
-    ctx.arc(gx - 4, gy - 5, 4, 0, Math.PI * 2); // Larger Eyes
+    ctx.arc(gx - 4, gy - 5, 4, 0, Math.PI * 2);
     ctx.arc(gx + 4, gy - 5, 4, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = "blue";

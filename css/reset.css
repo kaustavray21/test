@@ -1,0 +1,26 @@
+/* css/reset.css */
+
+body {
+  background-color: #111;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Courier New", Courier, monospace;
+  overflow-y: auto;
+  padding: 10px 0;
+  touch-action: pan-y;
+}
+
+/* --- SHARED WIDTH CONSTRAINT --- */
+#game-ui,
+#progress-container,
+#game-container,
+.powerup-legend {
+  width: 98%;
+  max-width: 870px;
+  box-sizing: border-box;
+}
