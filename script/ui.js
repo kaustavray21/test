@@ -16,7 +16,7 @@ function initUI(canvasWidth, canvasHeight) {
   canvas.height = canvasHeight;
 
   // Initial Overlay Text
-  statusMsg.innerText = "PAC-MAN V5.5";
+  statusMsg.innerText = "PAC-MAN V5.6";
   statusMsg.style.color = "yellow";
   winReason.innerText = "Collect 80% to Win | Use Powerups!";
   startBtn.innerText = "START GAME";

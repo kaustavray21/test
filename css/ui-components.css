@@ -96,7 +96,6 @@
   z-index: 2;
 }
 
-/* --- LEGEND --- */
 .powerup-legend {
   font-size: 14px;
   color: #aaa;
@@ -119,4 +118,14 @@
 }
 .leg-s {
   color: #c0c0c0;
+}
+
+.leg-w {
+  color: #8a2be2;
+}
+.leg-d {
+  color: #8b4513;
+}
+.leg-b {
+  color: #ffff00;
 }

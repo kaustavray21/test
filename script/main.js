@@ -13,7 +13,7 @@ let scaredTimer = 0;
 // Initialize
 initUI(COLS * TILE, ROWS * TILE);
 bindStartButton(startGame);
-initInput(() => isRunning); // Pass a checker function so input knows if game is running
+initInput(() => isRunning); // Pass checker so input knows if game is running
 
 function startGame() {
   score = 0;
@@ -22,8 +22,7 @@ function startGame() {
 }
 
 function resetLevel() {
-  // --- UPDATED: Generate Random Map ---
-  // Instead of copying a fixed template, we generate a new one.
+  // Generate New Random Map
   board = generateRandomMap();
 
   // Count dots
@@ -40,7 +39,7 @@ function resetLevel() {
 
   scaredTimer = 0;
 
-  // Reset Entities (functions from other files)
+  // Reset Entities
   resetPlayer();
   resetGhosts(level);
   resetPowerups(player.x, player.y);
@@ -54,7 +53,6 @@ function resetLevel() {
 function gameLoop() {
   if (!isRunning) return;
   update();
-  // draw function from ui.js
   draw(
     board,
     player,
@@ -73,7 +71,6 @@ function update() {
   if (scaredTimer > 0) scaredTimer--;
 
   // 2. Powerups Logic
-  // We pass 'addScore' and 'eatGhost' as callbacks so powerups.js can call them
   const powerupCallbacks = {
     addScore: addScore,
     eatGhost: eatGhost,
@@ -86,7 +83,8 @@ function update() {
 
   // Ghosts don't move if Time Freeze is active
   if (activeEffect.type !== POWERUPS.FREEZE) {
-    updateGhosts(board, player, scaredTimer);
+    // FIX: Passed 'activeEffect' so ghosts know if they should be SLOWED
+    updateGhosts(board, player, scaredTimer, activeEffect);
   }
 
   // 4. Collisions
@@ -155,7 +153,6 @@ function addScore(pts) {
   score += pts;
 
   if (pts === 10) {
-    // Only count normal dots for progress
     dotsEaten++;
   }
 

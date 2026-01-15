@@ -1,13 +1,17 @@
 // utils.js
 
 function isWall(board, gx, gy) {
+  // Bounds check
   if (gx < 0 || gx >= COLS || gy < 0 || gy >= ROWS) return true;
+  // Check if it is a Wall (Type 1)
   return board[gy][gx] === TYPES.WALL;
 }
 
 function bfs(board, gx, gy, tx, ty) {
+  // If already at target
   if (gx === tx && gy === ty) return { x: 0, y: 0 };
 
+  // Queue stores: { x, y, firstMove: {x, y} }
   let queue = [{ x: gx, y: gy, firstMove: null }];
   let visited = new Set();
   visited.add(`${gx},${gy}`);
@@ -21,6 +25,7 @@ function bfs(board, gx, gy, tx, ty) {
 
   let ops = 0;
 
+  // Search Limit (400 ops) to prevent lag spikes
   while (queue.length > 0 && ops < 400) {
     let curr = queue.shift();
     ops++;
@@ -31,6 +36,7 @@ function bfs(board, gx, gy, tx, ty) {
       let nx = curr.x + m.x;
       let ny = curr.y + m.y;
 
+      // Check bounds, walls, and visited
       if (
         nx >= 0 &&
         nx < COLS &&
@@ -44,10 +50,11 @@ function bfs(board, gx, gy, tx, ty) {
       }
     }
   }
+  // Return neutral move if no path found
   return { x: 0, y: 0 };
 }
 
-// --- NEW MAP GENERATOR ---
+// --- ADVANCED MAP GENERATOR (Recursive Backtracker) ---
 function generateRandomMap() {
   let map = [];
 

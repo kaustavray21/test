@@ -1,34 +1,43 @@
-// powerups.js
+// powerup.js
 
 let powerupOnMap = { active: false, x: 0, y: 0, type: 0 };
 let activeEffect = { type: 0, timer: 0 };
 let tornado = { active: false, x: 0, y: 0, dx: 0, dy: 0 };
+let fireTrails = []; // Defined Here
 let spawnTimer = 0;
 
 function resetPowerups(playerX, playerY) {
   powerupOnMap = { active: false, x: 0, y: 0, type: 0 };
   activeEffect = { type: 0, timer: 0 };
   tornado = { active: false, x: playerX || 0, y: playerY || 0, dx: 0, dy: 0 };
+  fireTrails = [];
   spawnTimer = 0;
 }
 
 function activatePowerup(type) {
   activeEffect.type = type;
-  activeEffect.timer = 600; // 10 seconds approx
-  if (type === POWERUPS.TITANIUM) activeEffect.timer = 300; // 5 seconds
 
-  if (type === POWERUPS.TORNADO) {
-    // Tornado starts at player position
-    tornado.active = true;
-    tornado.x = 0; // Will be set in update if needed, but usually syncs with player initially or spawns
-  }
+  // Default Duration (10s)
+  activeEffect.timer = 600;
+
+  // Specific Durations
+  if (type === POWERUPS.TITANIUM) activeEffect.timer = 300; // 5s
+  if (type === POWERUPS.FREEZE) activeEffect.timer = 300; // 5s
+  if (type === POWERUPS.TORNADO) activeEffect.timer = 400; // ~6.5s
+
+  // --- NEW POWERUP DURATIONS ---
+  if (type === POWERUPS.SLOW) activeEffect.timer = 480; // 8s
+  if (type === POWERUPS.DRILL) activeEffect.timer = 480; // 8s
+  if (type === POWERUPS.BOOST) activeEffect.timer = 600; // 10s
 }
 
 function updatePowerups(board, player, ghosts, callbacks) {
   // 1. Manage Effect Timer
   if (activeEffect.timer > 0) {
     activeEffect.timer--;
+    // Note: Pyro spawn logic is now exclusively in player.js (movement based)
   } else {
+    // Timer expired
     if (activeEffect.type !== POWERUPS.NONE) {
       if (activeEffect.type === POWERUPS.TORNADO) tornado.active = false;
       activeEffect.type = POWERUPS.NONE;
@@ -58,6 +67,11 @@ function updatePowerups(board, player, ghosts, callbacks) {
             board[ny][nx] = 0;
             callbacks.addScore(10);
           }
+          if (board[ny][nx] === 3) {
+            // Power Pellet
+            board[ny][nx] = 0;
+            callbacks.addScore(50);
+          }
         }
       }
     }
@@ -66,7 +80,6 @@ function updatePowerups(board, player, ghosts, callbacks) {
   // 4. Handle Tornado
   if (activeEffect.type === POWERUPS.TORNADO) {
     if (!tornado.active) {
-      // Initialize tornado at player pos if just starting
       tornado.active = true;
       tornado.x = player.x;
       tornado.y = player.y;
@@ -77,7 +90,7 @@ function updatePowerups(board, player, ghosts, callbacks) {
     const tgy = Math.floor(tornado.y / TILE);
 
     // Move only when aligned to grid to prevent getting stuck
-    if (tornado.x % TILE === 0 && tornado.y % TILE === 0) {
+    if (Math.abs(tornado.x % TILE) < 4 && Math.abs(tornado.y % TILE) < 4) {
       let closest = null;
       let minDist = 9999;
 
@@ -91,7 +104,7 @@ function updatePowerups(board, player, ghosts, callbacks) {
         }
       });
 
-      if (closest) {
+      if (closest && typeof bfs === "function") {
         const move = bfs(
           board,
           tgx,
@@ -102,7 +115,7 @@ function updatePowerups(board, player, ghosts, callbacks) {
         tornado.dx = move.x;
         tornado.dy = move.y;
       } else {
-        // Random move if no ghosts
+        // Random move if no ghosts or bfs missing
         const moves = [
           { x: 0, y: -1 },
           { x: 0, y: 1 },
@@ -111,8 +124,10 @@ function updatePowerups(board, player, ghosts, callbacks) {
         ].filter((m) => !isWall(board, tgx + m.x, tgy + m.y));
 
         if (moves.length) {
-          tornado.dx = moves[0].x;
-          tornado.dy = moves[0].y;
+          // Pick random valid move
+          const rand = moves[Math.floor(Math.random() * moves.length)];
+          tornado.dx = rand.x;
+          tornado.dy = rand.y;
         }
       }
     }
@@ -129,6 +144,12 @@ function updatePowerups(board, player, ghosts, callbacks) {
       }
     });
   }
+
+  // 5. Update Fire Trails
+  for (let i = fireTrails.length - 1; i >= 0; i--) {
+    fireTrails[i].timer--;
+    if (fireTrails[i].timer <= 0) fireTrails.splice(i, 1);
+  }
 }
 
 function spawnPowerup(board) {
@@ -142,10 +163,17 @@ function spawnPowerup(board) {
         active: true,
         x: rx,
         y: ry,
-        type: Math.floor(Math.random() * 5) + 1, // 1 to 5
+        // Updated to include new powerups (Types 1 to 8)
+        type: Math.floor(Math.random() * 8) + 1,
       };
       break;
     }
     attempts++;
   }
+}
+
+// Helper for Tornado AI
+function isWall(board, x, y) {
+  if (x < 0 || x >= COLS || y < 0 || y >= ROWS) return true;
+  return board[y][x] === 1;
 }
